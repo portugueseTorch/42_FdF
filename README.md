@@ -11,3 +11,5 @@ https://github.com/khabibullet/fdf
 https://github.com/mhahnFr/42cursus-FdF
 
 https://github.com/qst0/ft_libgfx
+
+https://aurelienbrabant.fr/blog/getting-started-with-the-minilibx
