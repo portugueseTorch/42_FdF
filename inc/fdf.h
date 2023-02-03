@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:58 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/02 20:43:54 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:46:05 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,17 @@
 # define FIT			1
 # define MARGIN			50
 
+/*** ERROR MESSAGES **/
+# define NUM_ARGS	"fdf requires 2 arguments"
+# define FILE_TYPE	"input file must be of type .fdf"
+# define FILE_OPEN	"no such file or directory"
+# define MEMORY		"unable to allocate memory"
+# define MAP_LOAD	"failure loading the map"
+# define BOOTING	"failure booting mlx server"
+
 /******* COLORS ******/
 # define GREEN_TEXT "\033[0;32m"
+# define RED_TEXT 	"\033[0;31m"
 # define RESET_TEXT "\033[0;0m"
 
 # define LIGHT_GRAY	0xBBBBBB
@@ -75,7 +84,6 @@ typedef struct s_point
 	int		color;
 	int		hex_color;
 	float	pos[3];
-	float	globe[2];
 	int		paint;
 }	t_point;
 
@@ -112,7 +120,7 @@ typedef struct s_meta
 }	t_meta;
 
 /**** Map Setup ****/
-void	load_map(t_map *map, char *file);
+void	load_map(t_meta *data, char *file);
 void	initialize_map(t_map *map, int flag);
 void	initialize_colors(t_map *map);
 
@@ -136,5 +144,8 @@ int		get_gradient(int start, int end, int length, int relative);
 
 int		handle_key_press(int code, void *param);
 int		handle_no_event(void *param);
+
+void	err_handler(char *code, t_meta *data);
+void	free_stuff(t_meta *data, int complete);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 11:32:12 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/02 20:45:10 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:48:00 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	initialize_colors(t_map *map)
 	map->colors.menu = MENU_COLOR;
 }
 
-static char	*initial_read(int fd)
+static char	*initial_read(int fd, t_meta *data)
 {
 	int		bytes;
 	char	*buffer;
@@ -53,7 +53,7 @@ static char	*initial_read(int fd)
 
 	buffer = malloc(sizeof(char) * BUFF + 1);
 	if (!buffer)
-		exit (EXIT_FAILURE);
+		err_handler(MEMORY, data);
 	content = ft_strdup("");
 	bytes = BUFF;
 	while (bytes == BUFF)
@@ -69,7 +69,7 @@ static char	*initial_read(int fd)
 	return (content);
 }
 
-static void	get_map_size(t_map *map)
+static void	get_map_size(t_map *map, t_meta *data)
 {
 	int		count;
 	int		i;
@@ -86,13 +86,13 @@ static void	get_map_size(t_map *map)
 		{
 			map->size.pos[Y]++;
 			if (map->size.pos[X] && map->size.pos[X] != count)
-				exit (EXIT_FAILURE);
+				err_handler(MAP_LOAD, data);
 			map->size.pos[X] = count;
 			count = 0;
 		}
 	}
 	if (map->size.pos[X] && map->size.pos[X] != count)
-		exit (EXIT_FAILURE);
+		err_handler(MAP_LOAD, data);
 	map->size.pos[Y]++;
 	map->num_points = map->size.pos[Y] * map->size.pos[X];
 }
@@ -111,7 +111,7 @@ static int	valid_point(char *str)
 	return (1);
 }
 
-static int	load_points(t_map *map, char *str, int line)
+static int	load_points(t_map *map, char *str, int line, t_meta *data)
 {
 	int			i;
 	char		**arr;
@@ -119,17 +119,21 @@ static int	load_points(t_map *map, char *str, int line)
 
 	i = 0;
 	arr = ft_split(str, ' ');
+	if (!arr)
+		err_handler(MAP_LOAD, data);
 	while (arr[i] && arr[i][0] != '\n')
 	{
 		if (!valid_point(&arr[i][0]))
-			exit (EXIT_FAILURE);
+		{
+			free_split(arr);
+			err_handler(MAP_LOAD, data);
+		}
 		map->points[index].pos[X] = i - (map->size.pos[X] / 2);
 		map->points[index].pos[Y] = line - (map->size.pos[Y] / 2);
 		map->points[index].pos[Z] = ft_atoi(&arr[i][0]);
 		map->points[index].paint = 1;
 		map->points[index].color = DEFAULT;
 		map->points[index].hex_color = get_hex_color(arr[i]);
-		// printf("%i\n", map->points[index].hex_color);
 		if (map->points[index].pos[Z] > map->size.pos[Z])
 			map->size.pos[Z] = map->points[index].pos[Z];
 		if (map->points[index].pos[Z] < map->min_z)
@@ -141,21 +145,23 @@ static int	load_points(t_map *map, char *str, int line)
 	return (i);
 }
 
-static void	get_map_points(t_map *map)
+static void	get_map_points(t_map *map, t_meta *data)
 {
 	int	i;
 	int	points;
 
 	i = 0;
 	map->points = ft_calloc(map->num_points, sizeof(t_point));
+	if (!map->points)
+		err_handler(MEMORY, data);
 	while (map->lines[i])
 	{
-		points += load_points(map, map->lines[i], i);
+		points += load_points(map, map->lines[i], i, data);
 		i++;
 	}
 }
 
-static void	get_file_lines(t_map *map, char *file)
+static void	get_file_lines(t_map *map, char *file, t_meta *data)
 {
 	int	i;
 	int	fd;
@@ -163,8 +169,10 @@ static void	get_file_lines(t_map *map, char *file)
 	i = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		exit (EXIT_FAILURE);
+		err_handler(MAP_LOAD, data);
 	map->lines = malloc(sizeof(char *) * (map->size.pos[Y] + 1));
+	if (!map->lines)
+		err_handler(MEMORY, data);
 	while (i < map->size.pos[Y])
 		map->lines[i++] = get_next_line(fd);
 	map->lines[i] = NULL;
@@ -207,20 +215,21 @@ void	setup_color(t_map *map)
 	}
 }
 
-void	load_map(t_map *map, char *file)
+void	load_map(t_meta *data, char *file)
 {
 	int	fd;
 
-	initialize_map(map, 0);
-	initialize_colors(map);
+	ft_printf("%s[ Loading Map... ]%s\n", GREEN_TEXT, RESET_TEXT);
+	initialize_map(&data->map, 0);
+	initialize_colors(&data->map);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		exit (EXIT_FAILURE);
-	map->file_content = initial_read(fd);
+		err_handler(FILE_OPEN, data);
+	data->map.file_content = initial_read(fd, data);
 	close(fd);
-	get_map_size(map);
-	get_file_lines(map, file);
-	get_map_points(map);
-	setup_color(map);
-	ft_printf("%s[ Setting up GUI ]%s\n", GREEN_TEXT, RESET_TEXT);
+	get_map_size(&data->map, data);
+	get_file_lines(&data->map, file, data);
+	get_map_points(&data->map, data);
+	setup_color(&data->map);
+	ft_printf("%s[ Setting up GUI... ]%s\n", GREEN_TEXT, RESET_TEXT);
 }

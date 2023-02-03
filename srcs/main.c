@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:44 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/02 20:38:35 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:47:56 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	boot_system(t_meta *data)
 		data->map.resize = data->map.ratio * 30;
 	else if (data->map.ratio > 1)
 		data->map.resize = data->map.ratio * 45;
-	// TODO: Initialize Keys
 	data->vars.mlx = mlx_init();
 	if (!data->vars.mlx)
 		return (-1);
@@ -46,25 +45,35 @@ int	boot_system(t_meta *data)
 	return (0);
 }
 
+int	close_window(void *param)
+{
+	t_meta	*data;
+
+	data = param;
+	free(data->map.file_content);
+	free_split(data->map.lines);
+	free(data->map.points);
+	mlx_destroy_image(data->vars.mlx, data->img.img_ptr);
+	mlx_destroy_window(data->vars.mlx, data->vars.win);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_meta	data;
-	if (argc != 2 || !file_is_valid(argv))
-		return (0);
-	load_map(&data.map, argv[1]);
+
+	if (argc != 2)
+		err_handler(NUM_ARGS, NULL);
+	if (!file_is_valid(argv))
+		err_handler(FILE_TYPE, NULL);
+	load_map(&data, argv[1]);
 	if (boot_system(&data) == -1)
-		exit(1); // need to free the contents of the map in this case
-	// printf("Min: %x\nMax: %x\nFloor: %x\nBackground: %x\n", data.map.colors.min, data.map.colors.max, data.map.colors.floor, data.map.colors.background);
-	// printf("%.2f, %.2f\n", data.map.size.pos[X], data.map.size.pos[Y]);
+		err_handler(BOOTING, &data);
 	draw_map(&data, FIT);
 	mlx_key_hook(data.vars.win, &handle_key_press, &data);
 	mlx_loop_hook(data.vars.mlx, &handle_no_event, &data);
+	mlx_hook(data.vars.win, 33, 0, &close_window, &data);
 	mlx_loop(data.vars.mlx);
-	// printf("\n%s\n", data.map.file_content);
-	// printf("%d\n", data.map.num_points);
-	// printf("\n\n");
-	// printf("[ X = %.2f, Y = %.2f, Z = %.2f ]\n", data.map.size.pos[X], data.map.size.pos[Y], data.map.size.pos[Z]);
-	// for (int i = 0; i < data.map.num_points; i++)
-	// 	printf("%i = [ X = %.2f, Y = %.2f, Z = %.2f, Col = %d ]\n", i, data.map.points[i].pos[X], data.map.points[i].pos[Y], data.map.points[i].pos[Z], data.map.points[i].color);
+	free(data.vars.mlx);
 	return (0);
 }

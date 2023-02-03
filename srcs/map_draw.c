@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 16:18:39 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/02 20:17:20 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:04:25 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,12 +299,6 @@ static void	fit_screen(t_meta *data, t_point *arr)
 		translate_map(data, arr);
 		data->map.scale += 0.2;
 	}
-	// if (limits(arr, data->map.num_points))
-	// {
-	// 	data->map.scale -= 0.2;
-	// 	copy_map(data->map.points, arr, data->map.num_points);
-	// 	translate_map(data, arr);
-	// }
 }
 
 void	connect_points(t_meta *data, t_point *arr)
@@ -341,7 +335,7 @@ int	draw_map(t_meta *data, int fit)
 
 	temp = malloc(sizeof(t_point) * data->map.num_points);
 	if (!temp)
-		exit (EXIT_FAILURE); // TODO: adjust exit function to clear leaks
+		err_handler(MEMORY, data);
 	draw_background(data);
 	copy_map(data->map.points, temp, data->map.num_points);
 	translate_map(data, temp);

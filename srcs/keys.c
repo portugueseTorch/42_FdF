@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:10:03 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/02 20:41:19 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/03 15:50:33 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,10 @@ void	amenize(t_meta *data)
 void	display_map_info(t_meta *data)
 {
 	printf("Angles: [ %.2f, %.2f, %.2f ]\n", data->map.angle[X], data->map.angle[Y], data->map.angle[Z]);
-	// printf("File Content:\n%s\n", data->map.file_content);
 	printf("Origin: [ %.2f, %.2f, %.2f ]\n", data->map.origin.pos[X], data->map.origin.pos[Y], data->map.origin.pos[Z]);
 	printf("Ratio: %.2f\n", data->map.ratio);
 	printf("Resize: %.2f\n", data->map.resize);
-	printf("Resize: %.2f\n", data->map.scale);
+	printf("Scale: %.2f\n", data->map.scale);
 	printf("Size: [ %.2f, %.2f, %.2f ]\n\n", data->map.size.pos[X], data->map.size.pos[Y], data->map.size.pos[Z]);
 }
 
@@ -130,6 +129,6 @@ int	handle_key_press(int code, void *param)
 	else if (code == XK_0)
 		reset(data);
 	else if (code == XK_Escape)
-		mlx_destroy_window(data->vars.mlx, data->vars.win);
+		free_stuff(data, 0);
 	return (0);
 }
