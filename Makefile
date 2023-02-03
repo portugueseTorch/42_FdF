@@ -6,7 +6,7 @@
 #    By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 09:42:46 by gda_cruz          #+#    #+#              #
-#    Updated: 2023/01/31 18:24:23 by gda_cruz         ###   ########.fr        #
+#    Updated: 2023/02/02 19:18:05 by gda_cruz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ LIB_DIR		=	lib
 LIBFT_DIR	=	$(LIB_DIR)/libft
 MLX_DIR		=	$(LIB_DIR)/mlx_linux
 
-SRC			=	srcs/main.c srcs/map_setup.c srcs/utils.c srcs/map_draw.c
+SRC			=	srcs/main.c srcs/map_setup.c srcs/utils.c srcs/map_draw.c \
+				srcs/math.c srcs/keys.c
 
 OBJ			=	$(SRC:srcs/%.c=$(OBJ_DIR)/%.o)
 B_OBJ		=	$(B_SRC:srcs/bonus/%.c=$(B_OBJ_DIR)/%.o)

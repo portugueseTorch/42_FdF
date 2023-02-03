@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:44 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/01/31 20:30:09 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/02 20:38:35 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ static int	file_is_valid(char **argv)
 
 int	boot_system(t_meta *data)
 {
-	data->map.proportion = data->map.size.pos[Z] / data->map.size.pos[X];
-	if (data->map.proportion > 0.5)
-		data->map.resize = data->map.proportion * 30;
+	data->map.ratio = data->map.size.pos[Z] / data->map.size.pos[X];
+	if (data->map.ratio > 0.5 && data->map.ratio <= 1.0)
+		data->map.resize = data->map.ratio * 15;
+	else if (data->map.ratio > 1 && data->map.ratio <= 2.0)
+		data->map.resize = data->map.ratio * 30;
+	else if (data->map.ratio > 1)
+		data->map.resize = data->map.ratio * 45;
 	// TODO: Initialize Keys
 	data->vars.mlx = mlx_init();
 	if (!data->vars.mlx)
@@ -50,11 +54,13 @@ int	main(int argc, char **argv)
 	load_map(&data.map, argv[1]);
 	if (boot_system(&data) == -1)
 		exit(1); // need to free the contents of the map in this case
-	printf("Min: %x\nMax: %x\nFloor: %x\nBackground: %x\n", data.map.colors.min, data.map.colors.max, data.map.colors.floor, data.map.colors.background);
+	// printf("Min: %x\nMax: %x\nFloor: %x\nBackground: %x\n", data.map.colors.min, data.map.colors.max, data.map.colors.floor, data.map.colors.background);
+	// printf("%.2f, %.2f\n", data.map.size.pos[X], data.map.size.pos[Y]);
 	draw_map(&data, FIT);
+	mlx_key_hook(data.vars.win, &handle_key_press, &data);
+	mlx_loop_hook(data.vars.mlx, &handle_no_event, &data);
 	mlx_loop(data.vars.mlx);
 	// printf("\n%s\n", data.map.file_content);
-	// printf("%.2f, %.2f\n", data.map.size.pos[X], data.map.size.pos[Y]);
 	// printf("%d\n", data.map.num_points);
 	// printf("\n\n");
 	// printf("[ X = %.2f, Y = %.2f, Z = %.2f ]\n", data.map.size.pos[X], data.map.size.pos[Y], data.map.size.pos[Z]);

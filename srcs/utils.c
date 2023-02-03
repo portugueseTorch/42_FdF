@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 17:45:22 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/01/31 18:03:53 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/01 18:40:45 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ static int	hextoi(char *str)
 	
 	i = 0;
 	result = 0;
-	if (!ft_ishex(str))
-		exit (EXIT_FAILURE);
+	// printf("%s\n", str);
+	// if (!ft_ishex(str))
+	// 	exit (EXIT_FAILURE);
 	while (str[i])
 	{
 		result *= 16;
@@ -54,10 +55,11 @@ int	get_hex_color(char *point)
 	if (ft_strchr(point, ','))
 	{
 		arr = ft_split(point, ',');
-		color = hextoi(arr[1]);
+		color = hextoi(&arr[1][2]);
 		free_split(arr);
+		return (color);
 	}
-	return (color);
+	return (0);
 }
 
 static int	get_color(int start, int end, float percent)

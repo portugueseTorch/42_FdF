@@ -6,20 +6,34 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:58 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/01/31 20:33:42 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/02 20:43:54 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
+/***** LIBRARIES *****/
+# include "../lib/libft/inc/libft.h"
+# include <mlx.h>
+# include <X11/keysym.h>
+# include <stdbool.h>
+# include <math.h>
+# include <X11/keysym.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <stdio.h>
+
+/******* MACROS ******/
 # define X 0
 # define Y 1
 # define Z 2
 # define WINDOW_WIDTH	1920
 # define WINDOW_HEIGHT	1080
-# define MENU_WIDTH		300
+# define MENU_WIDTH		0
 # define FIT			1
+# define MARGIN			50
 
 /******* COLORS ******/
 # define GREEN_TEXT "\033[0;32m"
@@ -30,27 +44,15 @@
 # define CLAY		0xCF9241
 # define BROWN		0x885306
 # define LIGHT_BLUE	0x70BEF5
+# define WATER_BLUE	0x3096e0
 # define DARK_BLUE	0x0434C3
 # define DARK_GRAY	0x303030
 
 # define BACKGROUND	BLACK
 # define MENU_COLOR DARK_GRAY
-# define DEFAULT	BLACK
-
-/***** LIBRARIES *****/
-
-# include "../lib/libft/inc/libft.h"
-# include <mlx.h>
-# include <stdbool.h>
-# include <math.h>
-# include <X11/keysym.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# include <stdio.h>
+# define DEFAULT	0xEF8633
 
 /***** STRUCTS *****/
-
 typedef struct s_vars
 {
 	void	*mlx;
@@ -86,7 +88,6 @@ typedef struct s_colors
 	int	menu;
 }	t_colors;
 
-
 typedef struct s_map
 {
 	char		*file_content;	// store the contents of the file instead of keep opening and closing it
@@ -97,8 +98,10 @@ typedef struct s_map
 	t_colors	colors;			// stores the general colors of the map, used to determine the color of the point
 	int			num_points;		// number of points in total
 	int			min_z;			// smallest value of z
-	float		proportion;		// stores the proportion between the highest value of z and the x axis
+	float		angle[3];		// holds the rotation angles for the projection
+	float		ratio;			// stores the ratio between the highest value of z and the x axis
 	float		resize;			// scaleback for z if it is too big in proportion to x axis
+	float		scale;
 }	t_map;
 
 typedef struct s_meta
@@ -110,15 +113,28 @@ typedef struct s_meta
 
 /**** Map Setup ****/
 void	load_map(t_map *map, char *file);
+void	initialize_map(t_map *map, int flag);
+void	initialize_colors(t_map *map);
 
 /**** Map Draw *****/
 int		draw_map(t_meta *data, int fit);
 void	color_bytes(char *img, int endian, int color, int a);
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+int		my_mlx_pixel_put(t_meta *data, t_point point);
+int		in_bounds(t_point point);
+void	copy_map(t_point *src, t_point *dest, int length);
+
+/******* Math ******/
+void	matrix_bzero(float (*matrix)[3]);
+float	deg_to_rad(float angle);
+t_point	multiply_matrix(float (*matrix)[3], t_point point);
+void	mult_matrix(float (*m1)[3], float (*m2)[3], float (*result)[3]);
 
 /****** Utils ******/
 void	free_split(char **arr);
 int		get_hex_color(char *point);
 int		get_gradient(int start, int end, int length, int relative);
+
+int		handle_key_press(int code, void *param);
+int		handle_no_event(void *param);
 
 #endif

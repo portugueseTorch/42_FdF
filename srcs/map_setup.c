@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 11:32:12 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/01/31 20:33:59 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/02 20:45:10 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #define BUFF 5000
 
-static void	initialize_map(t_map *map, int flag)
+void	initialize_map(t_map *map, int flag)
 {
 	if (flag == 0)
 	{
@@ -28,14 +28,19 @@ static void	initialize_map(t_map *map, int flag)
 	map->origin.pos[X] = WINDOW_WIDTH / 2;
 	map->origin.pos[Y] = WINDOW_HEIGHT / 2;
 	map->origin.pos[Z] = 0;
+	map->angle[X] = 30;
+	map->angle[Y] = -30;
+	map->angle[Z] = 15;
+	map->resize = 1;
+	map->scale = 1;
 }
 
-static void	initialize_colors(t_map *map)
+void	initialize_colors(t_map *map)
 {
 	map->colors.background = BACKGROUND;
-	map->colors.min = LIGHT_BLUE;
-	map->colors.max = BROWN;
-	map->colors.floor = CLAY;
+	map->colors.min = WATER_BLUE;
+	map->colors.max = CLAY;
+	map->colors.floor = 0x3e571a;
 	map->colors.menu = MENU_COLOR;
 }
 
@@ -97,11 +102,13 @@ static int	valid_point(char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '-' && str[i] == '+')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (ft_isdigit(str[i]))
 		i++;
-	return (i > 0);
+	if (i == 0)
+		return (0);
+	return (1);
 }
 
 static int	load_points(t_map *map, char *str, int line)
@@ -122,6 +129,7 @@ static int	load_points(t_map *map, char *str, int line)
 		map->points[index].paint = 1;
 		map->points[index].color = DEFAULT;
 		map->points[index].hex_color = get_hex_color(arr[i]);
+		// printf("%i\n", map->points[index].hex_color);
 		if (map->points[index].pos[Z] > map->size.pos[Z])
 			map->size.pos[Z] = map->points[index].pos[Z];
 		if (map->points[index].pos[Z] < map->min_z)
@@ -199,28 +207,6 @@ void	setup_color(t_map *map)
 	}
 }
 
-void	setup_globe(t_map *map)
-{
-	int		i;
-	float	s_x;
-	float	s_y;
-
-	i = 0;
-	s_x = (M_PI * 2) / (map->size.pos[X] - 1);
-	s_y = M_PI / map->size.pos[Y];
-	while (i < map->num_points)
-	{
-		map->points[i].globe[Y] = -map->points[i].pos[X] * s_x;
-		if (map->points[i].pos[Y] > 0)
-			map->points[i].globe[X] = (map->points[i].pos[Y] + \
-			(map->size.pos[Y] / 2)) * s_y - 0.5 * s_y;
-		else
-			map->points[i].globe[X] = (map->points[i].pos[Y] + \
-			(map->size.pos[Y] / 2) - 1) * s_y + 0.5 * s_y;
-		i++;
-	}
-}
-
 void	load_map(t_map *map, char *file)
 {
 	int	fd;
@@ -236,6 +222,5 @@ void	load_map(t_map *map, char *file)
 	get_file_lines(map, file);
 	get_map_points(map);
 	setup_color(map);
-	setup_globe(map);
 	ft_printf("%s[ Setting up GUI ]%s\n", GREEN_TEXT, RESET_TEXT);
 }
