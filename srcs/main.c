@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:44 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/03 15:47:56 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/04 15:33:11 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ static int	file_is_valid(char **argv)
 	return (1);
 }
 
+static void	initialize_data(t_meta *data)
+{
+	data->vars.mlx = NULL;
+	data->vars.win = NULL;
+	data->img.img_ptr = NULL;
+	data->map.lines = NULL;
+	data->map.points = NULL;
+	data->map.name = NULL;
+}
+
 int	boot_system(t_meta *data)
 {
 	data->map.ratio = data->map.size.pos[Z] / data->map.size.pos[X];
@@ -34,10 +44,12 @@ int	boot_system(t_meta *data)
 	data->vars.mlx = mlx_init();
 	if (!data->vars.mlx)
 		return (-1);
-	data->vars.win = mlx_new_window(data->vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "FdF - gda-cruz");
+	data->vars.win = mlx_new_window(data->vars.mlx, WINDOW_WIDTH, \
+		WINDOW_HEIGHT, "FdF - gda-cruz");
 	if (!data->vars.win)
 		return (-1);
-	data->img.img_ptr = mlx_new_image(data->vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data->img.img_ptr = mlx_new_image(data->vars.mlx, WINDOW_WIDTH, \
+		WINDOW_HEIGHT);
 	if (!data->img.img_ptr)
 		return (-1);
 	data->img.address = mlx_get_data_addr(data->img.img_ptr, &data->img.bpp, \
@@ -66,10 +78,15 @@ int	main(int argc, char **argv)
 		err_handler(NUM_ARGS, NULL);
 	if (!file_is_valid(argv))
 		err_handler(FILE_TYPE, NULL);
+	initialize_data(&data);
 	load_map(&data, argv[1]);
 	if (boot_system(&data) == -1)
 		err_handler(BOOTING, &data);
 	draw_map(&data, FIT);
+	ft_printf("%s ---------------------\e[m\n", GREEN_TEXT);
+	ft_printf("%s\e[1m| >> GUI ready to use |\e[m\n", GREEN_TEXT);
+	ft_printf("%s ---------------------\e[m\n", GREEN_TEXT);
+	print_instructions();
 	mlx_key_hook(data.vars.win, &handle_key_press, &data);
 	mlx_loop_hook(data.vars.mlx, &handle_no_event, &data);
 	mlx_hook(data.vars.win, 33, 0, &close_window, &data);

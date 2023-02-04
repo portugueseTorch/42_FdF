@@ -6,7 +6,7 @@
 #    By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 09:42:46 by gda_cruz          #+#    #+#              #
-#    Updated: 2023/02/03 15:07:56 by gda_cruz         ###   ########.fr        #
+#    Updated: 2023/02/04 12:34:10 by gda_cruz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,15 @@ LIB_DIR		=	lib
 LIBFT_DIR	=	$(LIB_DIR)/libft
 MLX_DIR		=	$(LIB_DIR)/mlx_linux
 
-SRC			=	srcs/main.c srcs/map_setup.c srcs/utils.c srcs/map_draw.c \
-				srcs/math.c srcs/keys.c srcs/free.c
+SRC			=	srcs/main.c \
+				srcs/adjustments.c srcs/line.c srcs/map_draw.c \
+				srcs/pixel.c srcs/projection.c \
+				srcs/height.c srcs/info.c srcs/keys.c \
+				srcs/reset.c srcs/rotation.c srcs/translation.c \
+				srcs/zoom.c \
+				srcs/load_points.c srcs/map_setup.c srcs/read_file.c \
+				srcs/colors_get.c srcs/colors_setup.c srcs/free.c \
+				srcs/map_utils.c srcs/math.c
 
 OBJ			=	$(SRC:srcs/%.c=$(OBJ_DIR)/%.o)
 B_OBJ		=	$(B_SRC:srcs/bonus/%.c=$(B_OBJ_DIR)/%.o)
