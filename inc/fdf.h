@@ -6,7 +6,7 @@
 /*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:58 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/04 15:22:34 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:32:59 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /***** LIBRARIES *****/
 # include "../lib/libft/inc/libft.h"
-# include <mlx.h>
+# include "../lib/mlx_linux/mlx.h"
 # include <X11/keysym.h>
 # include <stdbool.h>
 # include <math.h>

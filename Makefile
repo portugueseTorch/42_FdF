@@ -6,7 +6,7 @@
 #    By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 09:42:46 by gda_cruz          #+#    #+#              #
-#    Updated: 2023/02/04 12:34:10 by gda_cruz         ###   ########.fr        #
+#    Updated: 2023/02/07 11:03:03 by gda_cruz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ $(NAME):	$(OBJ)
 	@echo "$(YELLOW)  Preparing FdF...$(RESET)"
 	@make -s -C $(LIBFT_DIR)
 	@echo "$(LIGHT_GREEN)  Libft successfully compiled.$(RESET)"
+	@make -s -C $(MLX_DIR)
 	@echo "$(LIGHT_GREEN)  Minilibx successfully compiled.$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJ) $(MLXFLAGS) $(LIBFTFLAGS) -o $(NAME)
 	@echo "$(LIGHT_GREEN)  FdF successfully compiled.\n$(RESET)"
