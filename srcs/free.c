@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gda-cruz <gda-cruz@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 10:11:23 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/04 15:21:48 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:29:48 by gda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void	free_stuff(t_meta *data, int complete)
 	if (data->vars.win)
 		mlx_destroy_window(data->vars.mlx, data->vars.win);
 	if (complete)
-		if (data->vars.mlx)
-			mlx_destroy_display(data->vars.mlx);
+		return ;
 }
 
 void	err_handler(char *code, t_meta *data)

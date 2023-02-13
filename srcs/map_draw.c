@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_draw.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gda-cruz <gda-cruz@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 16:18:39 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/04 15:28:11 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:28:54 by gda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ int	draw_map(t_meta *data, int fit)
 	temp = malloc(sizeof(t_point) * data->map.num_points);
 	if (!temp)
 		err_handler(MEMORY, data);
+	if (data->img.img_ptr)
+	{
+		mlx_destroy_image(data->vars.mlx, data->img.img_ptr);
+		data->img.img_ptr = mlx_new_image(data->vars.mlx, WINDOW_WIDTH, \
+		WINDOW_HEIGHT);
+		if (!data->img.img_ptr)
+			err_handler(BOOTING, data);
+	}
 	draw_background(data);
 	copy_map(data->map.points, temp, data->map.num_points);
 	translate_map(data, temp);

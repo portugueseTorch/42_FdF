@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gda-cruz <gda-cruz@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 19:10:03 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/04 12:45:50 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:04:14 by gda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	handle_key_press_aux(int code, t_meta *data)
 	else if (code == XK_0)
 		reset(data);
 	else if (code == XK_Escape)
-		free_stuff(data, 0);
+		close_window((void *)data);
 }
 
 int	handle_key_press(int code, void *param)

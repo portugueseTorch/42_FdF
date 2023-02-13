@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gda-cruz <gda-cruz@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:58 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/06 15:32:59 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:34:44 by gda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define X 				0
 # define Y 				1
 # define Z 				2
-# define WINDOW_WIDTH	1920
-# define WINDOW_HEIGHT	1080
+# define WINDOW_WIDTH	960
+# define WINDOW_HEIGHT	540
 # define MENU_WIDTH		0
 # define FIT			1
 # define MARGIN			50
@@ -166,6 +166,7 @@ void	print_instructions(void);
 void	free_split(char **arr);
 void	free_stuff(t_meta *data, int complete);
 void	err_handler(char *code, t_meta *data);
+int		close_window(void *param);
 
 /******* Hooks *******/
 int		handle_key_press(int code, void *param);

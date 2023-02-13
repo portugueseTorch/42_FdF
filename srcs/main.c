@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gda-cruz <gda-cruz@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:44 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/04 15:33:11 by gda_cruz         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:31:44 by gda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,7 @@ int	close_window(void *param)
 	t_meta	*data;
 
 	data = param;
-	free(data->map.file_content);
-	free_split(data->map.lines);
-	free(data->map.points);
-	mlx_destroy_image(data->vars.mlx, data->img.img_ptr);
-	mlx_destroy_window(data->vars.mlx, data->vars.win);
+	free_stuff(data, 1);
 	return (0);
 }
 
@@ -91,6 +87,10 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(data.vars.mlx, &handle_no_event, &data);
 	mlx_hook(data.vars.win, 33, 0, &close_window, &data);
 	mlx_loop(data.vars.mlx);
-	free(data.vars.mlx);
+	if (data.vars.mlx)
+	{
+		mlx_destroy_display(data.vars.mlx);
+		free(data.vars.mlx);
+	}
 	return (0);
 }
