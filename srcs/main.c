@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gda-cruz <gda-cruz@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: gda_cruz <gda_cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:44 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/13 11:31:44 by gda-cruz         ###   ########.fr       */
+/*   Updated: 2023/02/13 12:33:44 by gda_cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	initialize_data(t_meta *data)
 	data->map.lines = NULL;
 	data->map.points = NULL;
 	data->map.name = NULL;
+	data->map.file_content = NULL;
 }
 
 int	boot_system(t_meta *data)
