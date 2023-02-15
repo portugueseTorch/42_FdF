@@ -6,7 +6,7 @@
 /*   By: gda-cruz <gda-cruz@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 09:13:58 by gda_cruz          #+#    #+#             */
-/*   Updated: 2023/02/13 10:34:44 by gda-cruz         ###   ########.fr       */
+/*   Updated: 2023/02/15 09:11:18 by gda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define X 				0
 # define Y 				1
 # define Z 				2
-# define WINDOW_WIDTH	960
-# define WINDOW_HEIGHT	540
+# define WINDOW_WIDTH	1440
+# define WINDOW_HEIGHT	810
 # define MENU_WIDTH		0
 # define FIT			1
 # define MARGIN			50
